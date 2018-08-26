@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const conversationSchema = Schema({
     conversationType:  {type: String,  default: 'channel'},
-    title: {type: String, default:'general',index: true},
+    title: {type: String, default:'General',index: true},
     participants: [{ type: Schema.Types.ObjectId, ref: 'User'}]
 },{timestamps: true});
 

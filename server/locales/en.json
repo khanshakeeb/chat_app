@@ -8,5 +8,7 @@
     "USER_SIGNIN_SUCCESS":"User has been siginin successfully",
     "PASSWORD_ERROR": "Email/Password doesn't match",
     "USER_PROFILE": "User profile fetch successfully",
-    "USER_PROFILE_ERROR": "Unable to fetch user profile successfully"
+    "USER_PROFILE_ERROR": "Unable to fetch user profile successfully",
+    "Full_CONVERSATOIN": "Get full conversations",
+    "Full_CONVERSATOIN_ERROR": "Unable to get full conversations"
 }

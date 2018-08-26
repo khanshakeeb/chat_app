@@ -42,7 +42,7 @@ function _generateMessageData(users,conversation){
             messageType:'text'
         };
     });
-    console.log("Messages ", messages);
+    
     const data = [
         {
             'model': 'Message',

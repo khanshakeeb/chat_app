@@ -26,7 +26,9 @@ module.exports = {
             
             if(isSaved && isUpdated){
                 // assign to default chat channel e.g general
-                let assignConversation = await Conversation.findOneAndUpdate({title: 'General'},{participants:[isSaved._id]},{upsert:true});
+                let assignConversation = await Conversation.findOneAndUpdate({title: 'General'},
+                    {$push: { participants: isSaved._id } },
+                    { upsert:true });
                 console.log("assign conversation", assignConversation);
                 response = responseHandler.successResponse(
                     res.__('USER_SIGNUP_SUCCESS'),

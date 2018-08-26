@@ -39,7 +39,6 @@ module.exports = function(app) {
     // =====================================
     app.get('/api/v1/userProfile',auth.isAuthoriation, authCtrl.profile);  
     app.get('/api/v1/editProfile',auth.isAuthoriation, authCtrl.editProfile);  
-
-    
+    app.get('/api/v1/getFullConversation/:conversationId',auth.isAuthoriation, chatBoxCtrl.getFullConversation );
 };
 
