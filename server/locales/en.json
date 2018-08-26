@@ -1,0 +1,12 @@
+{
+    "WELCOME_MSG": "Hi! Welcome!",
+    "USER_EXISTS": "User already exists",
+    "USER_SIGNUP_SUCCESS": "User has been singup successfully",
+    "USER_SIGNUP_ERROR": "Something went wrong unable to signup successfully",
+    "USER_SIGNUP_LOGOUT":"User has been signout successfully",
+    "USER_SIGNUP_LOGOUT_ERROR":"Soemthing went wrong, unable to logout",
+    "USER_SIGNIN_SUCCESS":"User has been siginin successfully",
+    "PASSWORD_ERROR": "Email/Password doesn't match",
+    "USER_PROFILE": "User profile fetch successfully",
+    "USER_PROFILE_ERROR": "Unable to fetch user profile successfully"
+}
