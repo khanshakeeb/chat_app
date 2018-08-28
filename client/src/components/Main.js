@@ -11,7 +11,7 @@ export default class Main extends Component {
             <Switch>
                 <Route exact path='/' component={Login}/>
                 <Route exact path='/signup' component={Signup}/>
-                <Route exact path='/chat' component={Chat}/>
+                <Route exact path='/chat/:conversationType/:id' component={Chat}/>
             </Switch>       
         </div>
            

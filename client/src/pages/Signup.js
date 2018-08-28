@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import  { Redirect } from 'react-router-dom';
-import ChatAPI from '../utility/ChatAPI';
+import ChatAPI from '../utility/chatAPI';
 import appLocalStorage from '../utility/appLocalStorage';
 
 export default class Signup extends Component {

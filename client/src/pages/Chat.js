@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import appLocalStorage from '../utility/appLocalStorage';
 import { Button,Input } from 'reactstrap';
 import chatSocket from '../utility/socket';
+import ChatAPI from '../utility/chatAPI';
 
 export default class Chat extends Component {
   constructor(props){
@@ -27,6 +28,10 @@ export default class Chat extends Component {
   handleSendMessage(){
     console.log(this.state.textMessage);
     chatSocket.sendMessage(this.state.textMessage);
+  }
+
+  componentDidMount(){
+
   }
   render() {
    return (
