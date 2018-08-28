@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const i18n = require('i18n');
+const cors = require('cors');
 const configDB = require('./app/config/database.js');
 
 const app = express();
@@ -22,9 +23,25 @@ mongoose.connection.on('disconnected', function () {
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+
+app.use(function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+
+  //intercepts OPTIONS method
+  if ('OPTIONS' === req.method) {
+    //respond with 200
+    res.send(200);
+  }
+  else {
+  //move on
+    next();
+  }
+});
 app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json({limit: '50mb'}))
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}))
 app.use(cookieParser());
 
 const routes = require('./app/routes.js'); // load our routes and pass in our app and fully configured passport
@@ -47,28 +64,27 @@ app.use(function(req, res, next) {
 });
 
 // development error handler
-// will print stacktrace
+
 if (app.get('env') === 'development') {
-  app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
+  app.use(function (err, req, res, next) {
+    res.status(err.status || 500)
+
+    res.json({
       message: err.message,
       error: err
-    });
-  });
+    })
+  })
 }
-
 // production error handler
 // no stacktraces leaked to user
 
-
-app.use(function(err, req, res, next) {
-  res.status(err.status || 500);
-  res.render('error', {
+app.use(function (err, req, res, next) {
+  res.status(err.status || 500)
+  res.json({
     message: err.message,
-    error: {}
-  });
-});
+    error: err
+  })
+})
 
 
 module.exports = app;

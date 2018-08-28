@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Button, Form, FormGroup, Input,Col } from 'reactstrap';
-import axio from 'axios';
-//import  { Redirect } from 'react-router-dom';
+import  { Redirect } from 'react-router-dom';
+import ChatAPI from '../utility/ChatAPI';
+import appLocalStorage from '../utility/appLocalStorage';
 export default class Login extends Component {
 
   constructor(props){
@@ -9,31 +10,45 @@ export default class Login extends Component {
     this.state={
       username:'',
       password:'',
-      confirmPassword: ''
+      isRedirectUrl: false
     };
-    this.clickHandler = this.clickHandler.bind(this);
+  
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  clickHandler(){
-    console.log("dsfdsfdsfsd", this.state);
-  }
+  
 
   handleChange(event){
+    console.log("event object onchange",event.target.name);
     this.setState({
-      [event.target.id]: event.target.value
+      [event.target.name]: event.target.value
     });
   }
 
   handleSubmit(event){
     event.preventDefault();
+    console.log("dsfdsfdsfsd", this.state);
+    ChatAPI.login(this.state).then( (response)=> {
+      console.log("response",response);
+      let data = response.data.data;
+      appLocalStorage.set('authenticatedUser',data);
+      this.setState({
+        isRedirectUrl: true
+      });
+    })
+    .catch(function (error) {
+      console.log("error ",error);
+    });
   }
 
   
   render() {
+    if(this.state.isRedirectUrl){
+      return  <Redirect to='/chat'/>;
+    }
     return (
-        <Form horizontal onSubmit={this.handleSubmit}> 
+        <Form horizontal onSubmit={this.handleSubmit} method='post'> 
           <FormGroup>
           <Col  sm={2}>
             Email
@@ -64,7 +79,7 @@ export default class Login extends Component {
           </FormGroup>  
           <FormGroup>
           <Col smOffset={2} sm={10}>
-            <Button type="submit" onClick={this.clickHandler}>Sign in</Button>
+            <Button type="submit" >Sign in</Button>
           </Col>
         </FormGroup>        
         </Form>
