@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import appLocalStorage from '../utility/appLocalStorage';
 import { Button,Input } from 'reactstrap';
 import chatSocket from '../utility/socket';
 import ChatAPI from '../utility/chatAPI';
+import appLocalStorage from '../utility/appLocalStorage';
 
 export default class Chat extends Component {
   constructor(props){
@@ -31,7 +31,20 @@ export default class Chat extends Component {
   }
 
   componentDidMount(){
-
+    let authenticatedUser = appLocalStorage.get('authenticatedUser');
+    console.log("authenticated user",authenticatedUser);
+    /**
+     * @todo: Default conversation id of General channel
+     * else it will read from converation url
+     */
+    if(authenticatedUser){
+      ChatAPI.getFullConversation('5b82c8d0aac209f0737b6c5e',authenticatedUser.token)
+        .then(response=>{
+          console.log(response);
+        })
+        .catch(error=>console.log(error));
+    }
+      
   }
   render() {
    return (

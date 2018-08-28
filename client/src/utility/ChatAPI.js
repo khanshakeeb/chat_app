@@ -1,6 +1,8 @@
 import * as endpoints from './endpoints';
 import axios from 'axios';
 import * as header from './headers';
+
+
 const ChatAPI = {
     login:  (form)=>{
         return axios.post(`${endpoints.API}signin`, {
@@ -29,8 +31,15 @@ const ChatAPI = {
     listChats:()=>{
 
     },
-    getFullConversation: ()=>{
-
+    getFullConversation: (id,token)=>{
+       
+        //header.values['x-auth-token'] = token;
+        //console.log(header);
+        return axios.get(`${endpoints.API}getFullConversation/${id}`,{ 
+            headers:{
+                'x-auth-token': token
+            }
+        });
     },
     deleteMessage:()=>{
 
