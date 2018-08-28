@@ -1,20 +1,24 @@
 import * as endpoints from './endpoints';
 import axios from 'axios';
+import * as header from '../utility/headers';
 const ChatAPI = {
     login:  (form)=>{
-        var headers = {
-            'Content-Type': 'application/json;charset=UTF-8',
-            "Access-Control-Allow-Origin": "*",
-        }
         return axios.post(`${endpoints.API}signin`, {
             email: form.email,
             password: form.password
-          },headers);
+          },header.values);
               
      
     },
-    signup: ()=>{
-
+    signup: (form)=>{
+        return axios.post(`${endpoints.API}signup`, {
+            email: form.email,
+            password: form.password,
+            firstName:form.firstName,
+            lastName: form.lastName,
+            phone:form.phone,
+            aboutMe:form.aboutMe
+          },header.values);
     },
     getProfile: ()=>{
 
