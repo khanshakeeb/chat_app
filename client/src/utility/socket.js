@@ -10,5 +10,12 @@ module.exports = {
     },
     recievedMessage:(cb)=>{
         openSocket.on('recievedMessage',(message)=>cb(message));
+    },
+    deleteMessage:(removeMessage)=>{
+
+        openSocket.emit('removeMessage',removeMessage);
+    },
+    editMessage:(message)=>{
+        openSocket.emit('editMessage',message);
     }
 }

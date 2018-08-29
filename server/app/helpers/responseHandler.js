@@ -22,6 +22,7 @@ var responseHandler = {
     generatedUserData: (data,token)=>{
       //Factory method which generate user data json response
       return {
+        userId: data._id,
         email: data.email,
         firstName: data.firstName,
         lastName: data.lastName,

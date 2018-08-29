@@ -31,13 +31,18 @@ const ChatAPI = {
     listChats:()=>{
 
     },
-    getFullConversation: (id,token)=>{
+    getFullConversation: (params)=>{
+       let url = null;
        
-        //header.values['x-auth-token'] = token;
-        //console.log(header);
-        return axios.get(`${endpoints.API}getFullConversation/${id}`,{ 
+       if(params.isDefault){
+        url =`${endpoints.API}getFullConversation`;
+       }else{
+        url =`${endpoints.API}getFullConversation/${params.id}`;
+       }
+        
+        return axios.get(url,{ 
             headers:{
-                'x-auth-token': token
+                'x-auth-token': params.token
             }
         });
     },

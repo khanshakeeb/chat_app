@@ -46,7 +46,7 @@ export default class Login extends Component {
   
   render() {
     if(this.state.isRedirectUrl){
-      return  <Redirect to='/chat/channel/5b824dd0d9f516140f5af240'/>;
+      return  <Redirect to='/chat/messages'/>;
     }
     return (
         <Form horizontal onSubmit={this.handleSubmit} method='post'> 

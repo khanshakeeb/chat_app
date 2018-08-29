@@ -8,7 +8,7 @@ export default class App extends Component {
     return (
       <Router>
         <Container>
-        <Head />
+         <Head />
           <Main />
         </Container>
          

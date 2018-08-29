@@ -50,7 +50,7 @@ export default class Signup extends Component {
   render() {
     const {isRedirectUrl,formErrors} = this.state;
     if(isRedirectUrl){
-      return <Redirect to='/chat'/>;
+      return <Redirect to='/chat/messages'/>;
     }
     return (
         <div>

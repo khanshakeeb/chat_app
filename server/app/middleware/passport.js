@@ -11,7 +11,7 @@ module.exports =  {
             passReqToCallback: true
         },
         async (req, email, password, done) => { 
-        console.log('logging email', email, password)
+       
         try{
            // const userModel = new UserModel();
             let user = await UserModel.findOne({email:email});
