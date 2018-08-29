@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Form, FormGroup, Input,Col } from 'reactstrap';
+import { Button, Form, FormGroup, Input,Row,Col } from 'reactstrap';
 import  { Redirect } from 'react-router-dom';
 import ChatAPI from '../utility/chatAPI';
 import appLocalStorage from '../utility/appLocalStorage';
@@ -16,12 +16,12 @@ export default class Login extends Component {
   
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    
+   
   }
 
   
-
-  handleChange(event){
-    console.log("event object onchange",event.target.name);
+   handleChange(event){
     this.setState({
       [event.target.name]: event.target.value
     });
@@ -43,12 +43,20 @@ export default class Login extends Component {
     });
   }
 
-  
+  componentDidUpdate(){
+    let isAuthenticated = appLocalStorage.get('authenticatedUser');
+    console.log("dsfdsfds", isAuthenticated);
+    if(isAuthenticated && isAuthenticated.userId) this.setState({isRedirectUrl:true});
+  }
+
   render() {
-    if(this.state.isRedirectUrl){
+    let isAuthenticated = appLocalStorage.get('authenticatedUser');
+    if(this.state.isRedirectUrl || (isAuthenticated && isAuthenticated.userId)){
       return  <Redirect to='/chat/messages'/>;
     }
     return (
+       <Row>
+         <Col sm="12" md={{ size: 8, offset: 2 }}>
         <Form horizontal onSubmit={this.handleSubmit} method='post'> 
           <FormGroup>
           <Col  sm={2}>
@@ -61,6 +69,7 @@ export default class Login extends Component {
               placeholder="e.g user@example.com"
               defaultValue={this.state.password}
               onChange={this.handleChange} 
+              required
             />
           </Col>          
           </FormGroup>
@@ -74,16 +83,19 @@ export default class Login extends Component {
             name="password" 
             placeholder="e.g us3r13"
             defaultValue={this.state.password}
-            onChange={this.handleChange}   
+            onChange={this.handleChange} 
+            required  
             />
           </Col>
           </FormGroup>  
           <FormGroup>
           <Col smOffset={2} sm={10}>
-            <Button type="submit" >Sign in</Button>
+            <Button type="submit" color="success" disabled={!this.state.password}>Sign in</Button>
           </Col>
         </FormGroup>        
         </Form>
+        </Col>
+        </Row>
     );
   }
 }

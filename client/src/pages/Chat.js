@@ -3,6 +3,7 @@ import { Button, Input, Row, Col, InputGroup, InputGroupText, InputGroupAddon } 
 import chatSocket from '../utility/socket';
 import ChatAPI from '../utility/chatAPI';
 import appLocalStorage from '../utility/appLocalStorage';
+import ChatList from '../components/ChatList';
 
 export default class Chat extends Component {
   constructor(props) {
@@ -110,10 +111,9 @@ export default class Chat extends Component {
     return (
       <Row>
         <Col sm="4">
-          Channel list here
+          <ChatList></ChatList>
        </Col>
         <Col sm="8">
-
           <div className='recent-chat'>
             {chatHeading}
           </div>
@@ -146,7 +146,7 @@ export default class Chat extends Component {
                 value={this.state.textMessage}
                 onChange={this.handleChange} />
               <InputGroupAddon addonType="append">
-                <Button onClick={this.handleSendMessage} color="success" >Send</Button>
+                <Button onClick={this.handleSendMessage} color="success" disabled={!this.state.textMessage} >Send</Button>
               </InputGroupAddon>
             </InputGroup>
           </div>

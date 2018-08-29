@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input,Row, Col } from 'reactstrap';
 import  { Redirect } from 'react-router-dom';
 import ChatAPI from '../utility/chatAPI';
 import appLocalStorage from '../utility/appLocalStorage';
@@ -49,11 +49,13 @@ export default class Signup extends Component {
   }
   render() {
     const {isRedirectUrl,formErrors} = this.state;
-    if(isRedirectUrl){
-      return <Redirect to='/chat/messages'/>;
+    let isAuthenticated = appLocalStorage.get('authenticatedUser');
+    if(this.state.isRedirectUrl || (isAuthenticated && isAuthenticated.userId)){
+      return  <Redirect to='/chat/messages'/>;
     }
     return (
-        <div>
+        <Row>
+          <Col sm="12" md={{ size: 8, offset: 2 }} >
           <div>{formErrors}</div>  
           <Form horizontal onSubmit={this.handleSubmit} method='post'>
           <FormGroup>
@@ -64,6 +66,7 @@ export default class Signup extends Component {
               placeholder="e.g user@test.com" 
               defaultValue={this.state.email}
               onChange={this.handleChange} 
+              required
               />
           </FormGroup>
           <FormGroup>
@@ -74,6 +77,7 @@ export default class Signup extends Component {
               placeholder="e.g us3r13" 
               defaultValue={this.state.password}
               onChange={this.handleChange} 
+              required
               />
           </FormGroup>        
           <FormGroup>
@@ -84,6 +88,7 @@ export default class Signup extends Component {
               placeholder="e.g us3r13" 
               defaultValue={this.state.confirmPassword}
               onChange={this.handleChange} 
+              required
               />
           </FormGroup> 
           <FormGroup>
@@ -94,6 +99,7 @@ export default class Signup extends Component {
               placeholder="Micheal" 
               defaultValue={this.state.firstName}
               onChange={this.handleChange} 
+              required
               />
           </FormGroup> 
           <FormGroup>
@@ -103,7 +109,9 @@ export default class Signup extends Component {
               name="lastName"  
               placeholder="e.g Bay"  
               defaultValue={this.state.lastName}
-              onChange={this.handleChange}  />
+              onChange={this.handleChange} 
+              required
+               />
           </FormGroup> 
           <FormGroup>
             <Label >Phone number</Label>
@@ -113,6 +121,7 @@ export default class Signup extends Component {
                 placeholder="e.g +4272164432"
                 defaultValue={this.state.phone}
                 onChange={this.handleChange} 
+                required
             />
           </FormGroup> 
           <FormGroup>
@@ -123,11 +132,13 @@ export default class Signup extends Component {
               placeholder="e.g I am a JS developer" 
               defaultValue={this.state.aboutMe}
               onChange={this.handleChange} 
+              required
               />
           </FormGroup> 
-          <Button type="submit">Submit</Button>
+          <Button type="submit" color="success" disabled={!this.state.aboutMe}>Submit</Button>
         </Form>
-      </div>
+        </Col>
+      </Row>
     );
   }
 }
