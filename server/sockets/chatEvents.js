@@ -10,9 +10,8 @@ module.exports = function (sockIO) {
             console.log("message has been recieved", message);
             try {
                 let newMessage = new MessageModel(message);
-                let isSaved = await newMessage.save();
-                console.log("message saved", isSaved);
-                socketHandler.messageThreads(socket, MessageModel, isSaved.conversationId);
+                let isSaved = await newMessage.save();     
+                socketHandler.recentMessage(socket, MessageModel,isSaved._id);
             } catch (e) {
                 console.log(e);
                 socket.emit('onError', e);

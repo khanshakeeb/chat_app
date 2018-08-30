@@ -11,5 +11,16 @@ module.exports = {
         });
       
         socket.emit('recievedMessage',messageThread);
+    },
+    recentMessage: async(socket,MessageModel,messageId)=>{
+        let latestMessage = await MessageModel.findOne({_id: messageId})
+        .select("createdAt body author")
+        .sort({createdAt:'asc'})
+        .populate({
+            path: 'author',
+            select: 'firstName lastName displayName'
+        });
+        console.log("fetch recent message",latestMessage);
+        socket.emit('recievedMessage',latestMessage);
     }
 }

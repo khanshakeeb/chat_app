@@ -13,10 +13,13 @@ export default class Chat extends Component {
       conversationInfo: {},
       textMessage: '',
       editMessage:{},
+      editMode: false
     };
   
     chatSocket.recievedMessage((message) => {
-      this.setState({ chatHistory: message, textMessage: '' });
+      let prevMesssage = this.state.chatHistory;
+      prevMesssage.push(message);
+      this.setState({ chatHistory: prevMesssage, textMessage: '' });
     });
 
 
@@ -25,11 +28,13 @@ export default class Chat extends Component {
     this.deleteMessage = this.deleteMessage.bind(this);
     this.editMessage = this.editMessage.bind(this);
   }
+ 
 
   editMessage(message){
     this.setState({
       editMessage: message,
-      textMessage: message.body
+      textMessage: message.body,
+      editMode: true
     });
   }
   deleteMessage(messageId,authorId){
@@ -45,8 +50,8 @@ export default class Chat extends Component {
     this.setState({ textMessage: 'sending.....' });
     let authenticatedUser = appLocalStorage.get('authenticatedUser');
     let messageObject = {};
-    const editMessage =  this.state.editMessage;
-   if(editMessage){
+    const {editMessage,editMode} =  this.state;;
+   if(editMode){
     messageObject = {
       conversationId: this.state.conversationInfo._id,
       messageId: editMessage._id, 
@@ -55,7 +60,8 @@ export default class Chat extends Component {
       messageType: 'text'
     };
 
-    console.log("edit mesage", messageObject, editMessage);
+    console.log("edit mesage", editMessage);
+    this.setState({editMessage:null,editMode: false});
     chatSocket.editMessage(messageObject);
    }else{
     messageObject = {
@@ -64,7 +70,7 @@ export default class Chat extends Component {
       author: authenticatedUser.userId,
       messageType: 'text'
     };
-
+    console.log("new mesage", messageObject);
     chatSocket.sendMessage(messageObject);
    }
    
@@ -131,7 +137,7 @@ export default class Chat extends Component {
                 } 
                 return (
                   <li key={`message-${message._id}`}>
-                    <b>{message.author.firstName} {message.author.lastName}</b>
+                    {/* <b>{message.author.firstName} {message.author.lastName}</b> */}
                     <p>{message.body}</p>
                     <span className='time'>{message.createdAt}</span>
                     {actionButton}
