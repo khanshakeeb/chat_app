@@ -22,14 +22,24 @@ const ChatAPI = {
             aboutMe:form.aboutMe
           },header.values);
     },
-    getProfile: ()=>{
-
+    getUserProfile: (id,token)=>{
+        let url =`${endpoints.API}userProfile/${id}`;
+        return axios.get(url,{ 
+            headers:{
+                'x-auth-token': token
+            }
+        });
     },
     sendMessage:()=>{
 
     },
-    listChats:()=>{
-
+    getChatList:(token)=>{
+        let url =`${endpoints.API}getChatList`;
+        return axios.get(url,{ 
+            headers:{
+                'x-auth-token': token
+            }
+        });
     },
     getFullConversation: (params)=>{
        let url = null;

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Input, Row, Col, InputGroup, InputGroupText, InputGroupAddon } from 'reactstrap';
+import { Button, Input, Row, Col, InputGroup, InputGroupAddon } from 'reactstrap';
 import chatSocket from '../utility/socket';
 import ChatAPI from '../utility/chatAPI';
 import appLocalStorage from '../utility/appLocalStorage';
@@ -156,7 +156,7 @@ export default class Chat extends Component {
                 } 
                 return (
                   <li key={`message-${message._id}`}>
-                    {/* <b>{message.author.firstName} {message.author.lastName}</b> */}
+                    <b>{message.author.firstName} {message.author.lastName}</b>
                     <p>{message.body}</p>
                     <span className='time'>{message.createdAt}</span>
                     {actionButton}

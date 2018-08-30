@@ -3,8 +3,24 @@ const responseHandler = require('../helpers/responseHandler');
 const statusCodes = require('../config/statusCodes');
 const MessageModel = require('../models/message');
 const chatBox = {
-    getChatList: (req, res)=> {
-         res.json({data:'applicaiton loaded!!!'}); // load the index.ejs file
+    getChatList: async(req, res)=> {
+        let user = res.userData;
+        let response = null;
+        try{
+            let chatList = await ConversationModel.find({participants:user.user_id});
+            response = responseHandler.successResponse(
+                res.__('CHAT_LIST'),
+                chatList
+            );
+        }catch(e){
+            console.log("error", e);
+            response = responseHandler.errorResponse(
+                res.__('CHAT_LIST_ERROR'),
+                {},
+                statusCodes.BAD_REQUEST
+            );
+        };
+         res.json(response); 
     },
     getFullConversation: async (req, res)=>{
         let conversations = null;

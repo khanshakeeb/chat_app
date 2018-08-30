@@ -10,5 +10,8 @@
     "USER_PROFILE": "User profile fetch successfully",
     "USER_PROFILE_ERROR": "Unable to fetch user profile successfully",
     "Full_CONVERSATOIN": "Get full conversations",
-    "Full_CONVERSATOIN_ERROR": "Unable to get full conversations"
+    "Full_CONVERSATOIN_ERROR": "Unable to get full conversations",
+    "JWT_TOKEN_ERROR": "Unable to decode JWT token",
+    "CHAT_LIST":"Get all chat list of current login user",
+    "CHAT_LIST_ERROR":"Unable to get chat list of current login user"
 }

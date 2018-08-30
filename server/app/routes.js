@@ -14,7 +14,7 @@ module.exports = function(app) {
     // =====================================
     passport.use('local-login', LocalStrategy.getLocalStartegy());
     //Attach Site Controller to Route     
-    app.get('/api/v1/getChatList', chatBoxCtrl.getChatList);
+    app.get('/api/v1/getChatList', auth.isAuthorization,chatBoxCtrl.getChatList);
     
     // =====================================
     // Authorization controllers
@@ -37,8 +37,8 @@ module.exports = function(app) {
     // =====================================
     // PROFILE SECTION =====================
     // =====================================
-    app.get('/api/v1/userProfile',auth.isAuthoriation, authCtrl.profile);  
-    app.get('/api/v1/editProfile',auth.isAuthoriation, authCtrl.editProfile);  
-    app.get('/api/v1/getFullConversation/:conversationId?',auth.isAuthoriation, chatBoxCtrl.getFullConversation );
+    app.get('/api/v1/userProfile/:userId',auth.isAuthorization, authCtrl.profile);  
+    app.get('/api/v1/editProfile',auth.isAuthorization, authCtrl.editProfile);  
+    app.get('/api/v1/getFullConversation/:conversationId?',auth.isAuthorization, chatBoxCtrl.getFullConversation );
 };
 
