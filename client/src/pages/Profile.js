@@ -41,8 +41,11 @@ export default class Profile extends Component {
 
   render() {
    const {userProfile,isRedirect, conversationId} = this.state;
+   const { params } = this.props.match;
+   let currentUser = appLocalStorage.get('authenticatedUser');
+   const sendMessage = [];
    if(isRedirect) return <Redirect to={`/chat/messages/${conversationId}`} />
-   
+   if(currentUser.userId !== params.id) sendMessage.push(<div><Button color="success" onClick={this.startChat}>Send message</Button></div>);
    if(!userProfile) return <p>Loading profile data..</p>
     return (
         <div>
@@ -52,7 +55,8 @@ export default class Profile extends Component {
           <p>Display name: {userProfile.displayName}</p>
           <p>Email: {userProfile.email}</p>
           <p>About me: {userProfile.aboutMe}</p>
-          <div><Button color="success" onClick={this.startChat}>Send message</Button></div>
+          {sendMessage}
+          
         </div>
            
     );
