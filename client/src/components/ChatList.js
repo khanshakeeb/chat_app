@@ -19,13 +19,24 @@ export default class ChatList extends Component {
   }
   render() {
     const {chatList} = this.state;
+    let currentUser = appLocalStorage.get('authenticatedUser');
     if(!chatList) return <p>There is no active chat list</p>;
     return (
         <div>
           <h1>Recent Chats</h1>
-          {chatList.map((listItem)=>{            
+          {chatList.map((listItem)=>{     
+            let title = listItem.title;
+            if(listItem.conversationType === 'private'){
+                let oppositeRecipient = listItem.participants.find((user)=>{
+                    //console.log("user item", user,currentUser);
+                    return user._id !== currentUser.userId;
+                });
+                console.log("oppositeRecipient",oppositeRecipient);
+                title = `${oppositeRecipient.firstName} ${oppositeRecipient.lastName}`;
+            }
+
             return(
-              <div key={`chat-${listItem._id}`}><p><Link to={`/chat/messages/${listItem._id}`}>{listItem.title}</Link></p></div>
+              <div key={`chat-${listItem._id}`}><p><Link to={`/chat/messages/${listItem._id}`}>{title}</Link></p></div>
             );
           })}
         </div>

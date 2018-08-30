@@ -30,8 +30,17 @@ const ChatAPI = {
             }
         });
     },
-    sendMessage:()=>{
-
+    startConverstation:(recipient, current,token)=>{
+        console.log("chat api post",recipient, current,token);
+        return axios.post(`${endpoints.API}startConversation`, {
+            recipient: recipient,
+            currentUser: current
+        }, {
+            headers:{
+                'x-auth-token': token
+            }
+        });
+       
     },
     getChatList:(token)=>{
         let url =`${endpoints.API}getChatList`;
@@ -55,12 +64,6 @@ const ChatAPI = {
                 'x-auth-token': params.token
             }
         });
-    },
-    deleteMessage:()=>{
-
-    },
-    editMessage:()=>{
-
     }
 
 };

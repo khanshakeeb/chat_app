@@ -7,7 +7,13 @@ const chatBox = {
         let user = res.userData;
         let response = null;
         try{
-            let chatList = await ConversationModel.find({participants:user.user_id});
+            let chatList = await ConversationModel.find({participants:user.user_id})
+            .select("title conversationType participants")
+            .sort('-createdAt')
+            .populate({
+                path: 'participants',
+                select: 'firstName lastName displayName _id'
+            });
             response = responseHandler.successResponse(
                 res.__('CHAT_LIST'),
                 chatList
@@ -40,7 +46,7 @@ const chatBox = {
             .sort('-createdAt')
             .populate({
                 path: 'participants',
-                select: 'firstName lastName displayName'
+                select: 'firstName lastName displayName _id'
             });
 
             messages = await MessageModel.find({conversationId: conversations._id})
@@ -65,6 +71,33 @@ const chatBox = {
             );
         }
         
+        res.json(response);
+    },
+    startConversation:async(req, res)=>{
+        let response = null;
+        const postData = req.body;
+        
+        try{
+            let conversationData = {
+                title: 'Privat chat',
+                conversationType: 'private',
+                participants:[postData.recipient,postData.currentUser]
+            }
+            const conversation = await ConversationModel.create(conversationData);
+            console.log("Conversation started", conversation);
+            response = responseHandler.successResponse(
+                res.__('Full_CONVERSATOIN'),
+                conversation
+            );
+        }catch(e){
+            console.log(e);
+            console.log("error", e);
+            response = responseHandler.errorResponse(
+                res.__('Full_CONVERSATOIN_ERROR'),
+                {},
+                statusCodes.BAD_REQUEST
+            );
+        }
         res.json(response);
     }
 };

@@ -11,10 +11,21 @@ export default class Profile extends Component {
       isRedirect:false,
       userProfile:null
     };
-
+    this.startChat = this.startChat.bind(this);
   }
   startChat(){
-
+    const { params } = this.props.match;
+    let currentUser = appLocalStorage.get('authenticatedUser');
+    console.log("current user", currentUser);
+    ChatAPI.startConverstation(params.id,currentUser.userId,currentUser.token).then((conversation)=>{
+      let {data} = conversation.data;
+      console.log("new conversation created",data);
+      this.setState({
+        isRedirect: true,
+        conversationId: data._id
+      });
+    }).catch((e)=>console.log(e));
+    console.log("start new converstation");
   }
 
   componentDidMount(){
@@ -29,7 +40,9 @@ export default class Profile extends Component {
   }
 
   render() {
-   const {userProfile} = this.state;
+   const {userProfile,isRedirect, conversationId} = this.state;
+   if(isRedirect) return <Redirect to={`/chat/messages/${conversationId}`} />
+   
    if(!userProfile) return <p>Loading profile data..</p>
     return (
         <div>

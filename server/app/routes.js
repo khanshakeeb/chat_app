@@ -15,6 +15,7 @@ module.exports = function(app) {
     passport.use('local-login', LocalStrategy.getLocalStartegy());
     //Attach Site Controller to Route     
     app.get('/api/v1/getChatList', auth.isAuthorization,chatBoxCtrl.getChatList);
+    app.post('/api/v1/startConversation', auth.isAuthorization,chatBoxCtrl.startConversation);
     
     // =====================================
     // Authorization controllers
