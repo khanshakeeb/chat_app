@@ -13,15 +13,25 @@ export default class Chat extends Component {
       conversationInfo: {},
       textMessage: '',
       editMessage:{},
-      editMode: false
+      editMode: false,
+      socketError: null
     };
   
-    chatSocket.recievedMessage((message) => {
-      let prevMesssage = this.state.chatHistory;
-      prevMesssage.push(message);
-      this.setState({ chatHistory: prevMesssage, textMessage: '' });
+    chatSocket.recievedMessage((data) => {
+        switch(data.action){
+          case 'newMessage':
+            let prevMesssage = this.state.chatHistory;
+            prevMesssage.push(data.message);
+            this.setState({ chatHistory: prevMesssage, textMessage: '' });
+          break;     
+          default:
+          this.setState({ chatHistory: data.message, textMessage: '' });
+        }  
     });
-
+    //Error handler
+    chatSocket.errorHandler((error)=>{
+      this.setState({socketError: error});
+    });
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSendMessage = this.handleSendMessage.bind(this);
@@ -50,7 +60,10 @@ export default class Chat extends Component {
     this.setState({ textMessage: 'sending.....' });
     let authenticatedUser = appLocalStorage.get('authenticatedUser');
     let messageObject = {};
-    const {editMessage,editMode} =  this.state;;
+    const {editMessage,editMode} =  this.state;
+    /**
+     * @todo: Need to optimize edit/delete algorithm
+     */
    if(editMode){
     messageObject = {
       conversationId: this.state.conversationInfo._id,
@@ -108,6 +121,12 @@ export default class Chat extends Component {
 
   }
   render() {
+    /**
+     * @todo: 1.Refactor component and break down into smaller one
+     * 2. fetch chat list 
+     * 3. generate private chat converstation id
+     * 4. theme component
+     */
     const { conversationInfo } = this.state;
     let authenticatedUser = appLocalStorage.get('authenticatedUser');
     let chatHeading = (<h1>Private Message</h1>);

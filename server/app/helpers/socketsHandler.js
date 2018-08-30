@@ -9,8 +9,11 @@ module.exports = {
             path: 'author',
             select: 'firstName lastName displayName'
         });
-      
-        socket.emit('recievedMessage',messageThread);
+       
+        socket.emit('recievedMessage', {
+            message:messageThread, 
+            action:'chatHistory',
+        });
     },
     recentMessage: async(socket,MessageModel,messageId)=>{
         let latestMessage = await MessageModel.findOne({_id: messageId})
@@ -20,7 +23,9 @@ module.exports = {
             path: 'author',
             select: 'firstName lastName displayName'
         });
-        console.log("fetch recent message",latestMessage);
-        socket.emit('recievedMessage',latestMessage);
+        socket.emit('recievedMessage',{
+            message:latestMessage, 
+            action:'newMessage',
+        });
     }
 }

@@ -17,5 +17,8 @@ module.exports = {
     },
     editMessage:(message)=>{
         openSocket.emit('editMessage',message);
+    },
+    errorHandler:(cb)=>{
+        openSocket.on('onError',(error)=>cb(error));
     }
 }
