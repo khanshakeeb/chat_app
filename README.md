@@ -43,7 +43,7 @@ You can hit API by using following URL: http://localhost:3001/api/v1
 
 # Demo users
 1. dummy_user_1@test.com/123456
-2. dummy_user_2@test.com/123456
+2. dummy_user_3@test.com/123456
 
 If you face any issue or encounter bug please open issue with screenshot
 
