@@ -10,7 +10,7 @@ module.exports = {
             select: 'firstName lastName displayName'
         });
        
-        socket.emit('recievedMessage', {
+        socket.broadcast.emit('recievedMessage', {
             message:messageThread, 
             action:'chatHistory',
         });
