@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Form, FormGroup, Input,Row,Col } from 'reactstrap';
+import { Button, Form, FormGroup, Input,Row,Col,Alert } from 'reactstrap';
 import  { Redirect } from 'react-router-dom';
 import ChatAPI from '../utility/chatAPI';
 import appLocalStorage from '../utility/appLocalStorage';
@@ -11,7 +11,9 @@ export default class Login extends Component {
     this.state={
       username:'',
       password:'',
-      isRedirectUrl: false
+      isRedirectUrl: false,
+      isError: false,
+      errorMessages: []
     };
   
     this.handleChange = this.handleChange.bind(this);
@@ -29,17 +31,40 @@ export default class Login extends Component {
 
   handleSubmit(event){
     event.preventDefault();
-    console.log("dsfdsfdsfsd", this.state);
+    const errorMessage = [];
     ChatAPI.login(this.state).then( (response)=> {
       console.log("response",response);
       let data = response.data.data;
-      appLocalStorage.set('authenticatedUser',data);
-      this.setState({
-        isRedirectUrl: true
-      });
+      if(!response.data.error && data.token){
+        appLocalStorage.set('authenticatedUser',data);
+        this.setState({
+          isRedirectUrl: true
+        });
+      }else{
+        console.log("====error case=====",response.data.error,data.token);
+        errorMessage.push(
+          <Alert color="danger">
+            There is some error occur at server you couldn't able to signin. Please try again.
+          </Alert>
+        );
+        this.setState({
+          isError: true,
+          errorMessages: errorMessage
+        });
+      }
+      
     })
-    .catch(function (error) {
+    .catch((error)=> {
       console.log("error ",error);
+      errorMessage.push(
+        <Alert color="danger">
+          There is some error occur at server you couldn't able to signin. Please try again.
+        </Alert>
+      );
+      this.setState({
+        isError: true,
+        errorMessages: errorMessage
+      });
     });
   }
 
@@ -54,9 +79,11 @@ export default class Login extends Component {
     if(this.state.isRedirectUrl || (isAuthenticated && isAuthenticated.userId)){
       return  <Redirect to='/chat/messages'/>;
     }
+   
     return (
        <Row>
          <Col sm="12" md={{ size: 8, offset: 2 }}>
+         {this.state.errorMessages}
         <Form horizontal onSubmit={this.handleSubmit} method='post'> 
           <FormGroup>
           <Col  sm={2}>

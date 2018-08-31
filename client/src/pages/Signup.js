@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Form, FormGroup, Label, Input,Row, Col } from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input,Row, Col,Alert } from 'reactstrap';
 import  { Redirect } from 'react-router-dom';
 import ChatAPI from '../utility/chatAPI';
 import appLocalStorage from '../utility/appLocalStorage';
@@ -23,32 +23,56 @@ export default class Signup extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
   handleChange(event){
-    console.log("event object onchange",event.target.name);
     this.setState({
       [event.target.name]: event.target.value
     });
   }
   handleSubmit(event){
     event.preventDefault();
+    let errorMessages = [];
     if(this.state.password !== this.state.confirmPassword){
-      this.state.formErrors.push(<li>Password should match!!</li>);
+      errorMessages.push( <Alert color="danger">Password should match!!</Alert>);
+      this.setState({
+        formErrors: errorMessages
+      });
+   
       return;
     }
    
     ChatAPI.signup(this.state).then( (response)=> {
-      console.log("response",response);
       let data = response.data.data;
-      appLocalStorage.set('authenticatedUser',data);
-      this.setState({
-        isRedirectUrl: true
-      });
+      if(response.data.error){
+        errorMessages.push(  
+          <Alert color="danger">
+           {response.data.message}
+          </Alert>
+        );
+        this.setState({
+          formErrors: errorMessages
+        });
+      }else{
+        appLocalStorage.set('authenticatedUser',data);
+        this.setState({
+          isRedirectUrl: true
+        });
+      }
+     
     })
     .catch(function (error) {
       console.log("error ",error);
+      errorMessages.push(
+        <Alert color="danger">
+          There we some error occure at server side you unable to signup.Please try again later
+        </Alert>
+      );
+      this.setState({
+        formErrors: errorMessages
+      });
+   
     });
   }
   render() {
-    const {isRedirectUrl,formErrors} = this.state;
+   
     let isAuthenticated = appLocalStorage.get('authenticatedUser');
     if(this.state.isRedirectUrl || (isAuthenticated && isAuthenticated.userId)){
       return  <Redirect to='/chat/messages'/>;
@@ -56,7 +80,7 @@ export default class Signup extends Component {
     return (
         <Row>
           <Col sm="12" md={{ size: 8, offset: 2 }} >
-          <div>{formErrors}</div>  
+          {this.state.formErrors}
           <Form horizontal onSubmit={this.handleSubmit} method='post'>
           <FormGroup>
             <Label >Email</Label>

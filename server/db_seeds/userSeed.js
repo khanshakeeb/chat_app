@@ -27,11 +27,11 @@ function _generateUserData(){
     for(i=1; i<= 5; i++){
         users.push({
             email: `dummy_user_${i}@test.com`,
-            firstName: `dummy first name ${i}`,
+            firstName: `first name ${i}`,
             password: passwordHash,
-            lastName: `dummy last name ${i}`,
+            lastName: `last name ${i}`,
             phone: `+9283838338`,
-            displayName: `dummy display name ${i}`,
+            displayName: `display name ${i}`,
             aboutMe: `dummy about me ${i}`,
             isActive: true,
             isOnline: true
