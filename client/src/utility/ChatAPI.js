@@ -64,6 +64,14 @@ const ChatAPI = {
                 'x-auth-token': params.token
             }
         });
+    },
+    logout:(token)=>{
+        let url = `${endpoints.API}signout`;
+        return axios.get(url,{ 
+            headers:{
+                'x-auth-token':token
+            }
+        });
     }
 
 };

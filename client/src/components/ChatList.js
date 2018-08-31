@@ -20,7 +20,7 @@ export default class ChatList extends Component {
   render() {
     const {chatList} = this.state;
     let currentUser = appLocalStorage.get('authenticatedUser');
-    if(!chatList) return <p>There is no active chat list</p>;
+    if(chatList.length < 0) return <p>There is no active chat list</p>;
     return (
         <div>
           <h1>Recent Chats</h1>

@@ -32,7 +32,7 @@ module.exports = function(app) {
 
       })(req, res, next);
     });
-    app.post('/api/v1/signup', authCtrl.signup);
+    app.post('/api/v1/signup', auth.isAlreadyExists,authCtrl.signup);
     app.get('/api/v1/signout', authCtrl.logout); 
         
     // =====================================

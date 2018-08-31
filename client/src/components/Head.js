@@ -12,6 +12,12 @@ export default class Head extends Component {
           <span><Link to={`/logout`}> Signout</Link></span>
         </div>
       );
+    }else{
+      isLogin.push(
+        <div>
+          <span><Link to={`/login`}> Signin</Link></span>
+        </div>
+      );
     }     
     return (
       <div>{isLogin}</div>          
