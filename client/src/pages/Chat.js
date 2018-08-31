@@ -6,6 +6,20 @@ import ChatAPI from '../utility/chatAPI';
 import appLocalStorage from '../utility/appLocalStorage';
 import ChatList from '../components/ChatList';
 
+
+const messageItemStyle = {  
+  border: `2px solid #dedede`,
+  backgroundColor:` #f1f1f1`,
+  borderRadius: `5px`,
+  padding: `10px`,
+  margin: `10px 0`,
+
+};
+
+const listStyle = {
+  listStyleType: `none`
+}
+
 export default class Chat extends Component {
   constructor(props) {
     super(props);
@@ -58,7 +72,7 @@ export default class Chat extends Component {
     });
   }
   handleSendMessage() {
-    this.setState({ textMessage: 'sending.....' });
+    this.setState({ textMessage: ' ' });
     let authenticatedUser = appLocalStorage.get('authenticatedUser');
     let messageObject = {};
     const {editMessage,editMode} =  this.state;
@@ -145,6 +159,7 @@ export default class Chat extends Component {
           </div>
           <div className="chat-box">
             <div className='chat-history'>
+              <ul style={listStyle}>
               {this.state.chatHistory.map(message => {
                 const actionButton = [];
                 if(message.author._id === authenticatedUser.userId){
@@ -156,15 +171,19 @@ export default class Chat extends Component {
                   );
                 } 
                 return (
-                  <li key={`message-${message._id}`}>
-                    <b><Link to={`/profile/${message.author._id}`}>{message.author.firstName} {message.author.lastName}</Link></b>
+                  <li key={`message-${message._id}`} style={messageItemStyle} >
+                    
+                    <p>
+                        <Link to={`/profile/${message.author._id}`}>{message.author.firstName} {message.author.lastName}</Link>
+                        <span className='time'> ({message.createdAt})</span>
+                    </p>
                     <p>{message.body}</p>
-                    <span className='time'>{message.createdAt}</span>
                     {actionButton}
                   </li>
                 );
               })
               }
+              </ul>
             </div>
             <InputGroup>
               <Input

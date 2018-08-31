@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { ListGroup, ListGroupItem } from 'reactstrap';
 import {Link} from "react-router-dom";
 import ChatAPI from '../utility/chatAPI';
 import appLocalStorage from '../utility/appLocalStorage';
@@ -24,8 +25,9 @@ export default class ChatList extends Component {
     return (
         <div>
           <h1>Recent Chats</h1>
+          <ListGroup>          
           {chatList.map((listItem)=>{     
-            let title = listItem.title;
+            let title = `#${listItem.title}`;
             if(listItem.conversationType === 'private'){
                 let oppositeRecipient = listItem.participants.find((user)=>{
                     return user._id !== currentUser.userId;
@@ -33,11 +35,12 @@ export default class ChatList extends Component {
                 console.log("oppositeRecipient",oppositeRecipient);
                 title = `${oppositeRecipient.firstName} ${oppositeRecipient.lastName}`;
             }
-
+            {/*<div key={`chat-${listItem._id}`}><p><Link to={`/chat/messages/${listItem._id}`}>{title}</Link></p></div>*/}
             return(
-              <div key={`chat-${listItem._id}`}><p><Link to={`/chat/messages/${listItem._id}`}>{title}</Link></p></div>
+              <ListGroupItem key={`chat-${listItem._id}`} tag="a" href={`/chat/messages/${listItem._id}`}>{title}</ListGroupItem>
             );
           })}
+          </ListGroup>
         </div>
            
     );

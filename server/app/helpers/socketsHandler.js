@@ -23,7 +23,7 @@ module.exports = {
             path: 'author',
             select: 'firstName lastName displayName'
         });
-        socket.emit('recievedMessage',{
+        socket.broadcast.emit('recievedMessage',{
             message:latestMessage, 
             action:'newMessage',
         });
